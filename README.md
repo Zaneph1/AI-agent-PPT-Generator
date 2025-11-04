@@ -249,22 +249,32 @@ paths = generator.batch_generate(texts, titles, style="creative")
 
 以下是使用AI-agent-PPT-Generator生成的PPT示例截图（共14页）：
 
-| 幻灯片 | 预览 | 
-|--------|------| 
-| 封面 | ![封面](img/1.png) | 
-| 目录 | ![目录](img/2.png) | 
-| 内容页1 | ![内容页1](img/3.png) | 
-| 内容页2 | ![内容页2](img/4.png) | 
-| 内容页3 | ![内容页3](img/5.png) | 
-| 内容页4 | ![内容页4](img/6.png) | 
-| 内容页5 | ![内容页5](img/7.png) | 
-| 图表页1 | ![图表页1](img/8.png) | 
-| 图表页2 | ![图表页2](img/9.png) | 
-| 总结页 | ![总结页](img/10.png) | 
-| 详细分析1 | ![详细分析1](img/11.png) | 
-| 详细分析2 | ![详细分析2](img/12.png) | 
-| 对比分析 | ![对比分析](img/13.png) | 
-| 结束页 | ![结束页](img/14.png) | 
+<div align="center">
+  <table border="0" style="border-collapse: collapse; width: 100%;">
+    <tr>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">封面</div><br><img src="./img/1.png" alt="封面" width="100%" max-width="200px"></td>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">目录</div><br><img src="./img/2.png" alt="目录" width="100%" max-width="200px"></td>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">内容页1</div><br><img src="./img/3.png" alt="内容页1" width="100%" max-width="200px"></td>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">内容页2</div><br><img src="./img/4.png" alt="内容页2" width="100%" max-width="200px"></td>
+    </tr>
+    <tr>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">内容页3</div><br><img src="./img/5.png" alt="内容页3" width="100%" max-width="200px"></td>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">内容页4</div><br><img src="./img/6.png" alt="内容页4" width="100%" max-width="200px"></td>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">内容页5</div><br><img src="./img/7.png" alt="内容页5" width="100%" max-width="200px"></td>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">图表页1</div><br><img src="./img/8.png" alt="图表页1" width="100%" max-width="200px"></td>
+    </tr>
+    <tr>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">图表页2</div><br><img src="./img/9.png" alt="图表页2" width="100%" max-width="200px"></td>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">总结页</div><br><img src="./img/10.png" alt="总结页" width="100%" max-width="200px"></td>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">详细分析1</div><br><img src="./img/11.png" alt="详细分析1" width="100%" max-width="200px"></td>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">详细分析2</div><br><img src="./img/12.png" alt="详细分析2" width="100%" max-width="200px"></td>
+    </tr>
+    <tr>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">对比分析</div><br><img src="./img/13.png" alt="对比分析" width="100%" max-width="200px"></td>
+      <td align="center" width="25%"><div style="font-size: 0.9em;">结束页</div><br><img src="./img/14.png" alt="结束页" width="100%" max-width="200px"></td>
+    </tr>
+  </table>
+</div>
 
 ## 本地部署 vs 云端增强
 

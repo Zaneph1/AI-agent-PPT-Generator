@@ -207,8 +207,8 @@ DEBUG=False
 
 ## 联系我们
 
-- 项目仓库：[https://github.com/yourusername/ai-ppt-generator](https://github.com/yourusername/ai-ppt-generator)
-- 问题反馈：[https://github.com/yourusername/ai-ppt-generator/issues](https://github.com/yourusername/ai-ppt-generator/issues)
+- 项目仓库：[[https://github.com/yourusername/ai-ppt-generator](https://github.com/yourusername/ai-ppt-generator)](https://github.com/Zaneph1/AI-agent-PPT-Generator)
+- 问题反馈：[[https://github.com/yourusername/ai-ppt-generator/issues](https://github.com/yourusername/ai-ppt-generator/issues)](https://github.com/Zaneph1/AI-agent-PPT-Generator)
 
 ---
 

@@ -1,0 +1,14 @@
+[
+    {
+        "url": "https://example.com/laptop_front.jpg",
+        "caption": "笔记本正面高清图，展示超窄边框和金属机身"
+    },
+    {
+        "url": "https://example.com/gaming_benchmark.png",
+        "caption": "游戏帧率测试图表，显示平均120fps"
+    },
+    {
+        "url": "https://example.com/thermal_map.jpg",
+        "caption": "红外热成像图，显示散热分布均匀"
+    }
+]

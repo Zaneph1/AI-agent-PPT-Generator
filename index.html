@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI PPT 生成助手</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 配置 Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#10B981',
+                        accent: '#6366F1',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .glassmorphism {
+                @apply bg-white/80 backdrop-blur-md border border-gray-200/50;
+            }
+            .gradient-bg {
+                @apply bg-gradient-to-br from-primary/5 to-secondary/5;
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg font-sans text-dark">
+    <header class="py-6 px-4 md:px-8 bg-white shadow-sm">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-magic text-primary text-2xl"></i>
+                <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">AI PPT 生成助手</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors">
+                    <i class="fa fa-question-circle mr-1"></i>帮助
+                </a>
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors">
+                    <i class="fa fa-github mr-1"></i>源码
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto py-8 px-4 md:px-8">
+        <!-- 简介卡片 -->
+        <div class="glassmorphism rounded-xl p-6 mb-8 card-hover">
+            <h2 class="text-xl font-semibold mb-2 text-primary">功能介绍</h2>
+            <p class="text-gray-700">
+                这是一个基于 AI 的 PPT 生成助手，您可以输入文本内容和上传图片，系统将自动分析并生成适合的 PPT 代码提示词。
+                生成的提示词可以用于指导 AI 模型生成完整的 PPT 代码。
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- 输入区域 -->
+            <div class="space-y-8">
+                <!-- 文本输入 -->
+                <div class="glassmorphism rounded-xl p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-primary">
+                            <i class="fa fa-file-text-o mr-2"></i>文本内容
+                        </h3>
+                        <span class="text-xs text-gray-500">支持多行文本输入</span>
+                    </div>
+                    <textarea 
+                        id="textInput" 
+                        class="w-full h-60 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all resize-none" 
+                        placeholder="请输入您的文本内容..."
+                    >这款笔记本电脑性能很强，打游戏非常流畅，散热也不错。
+但是重量有点重，携带不方便，适合固定场所使用。
+总体来说性价比还可以。
+
+笔记本电脑采用了最新的处理器，内存容量大，存储空间充裕。
+屏幕分辨率高，显示效果细腻。
+散热系统经过优化，长时间使用也不会过热。</textarea>
+                </div>
+
+                <!-- 图片选择 -->
+                <div class="glassmorphism rounded-xl p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-primary">
+                            <i class="fa fa-image mr-2"></i>图片选择
+                        </h3>
+                        <span class="text-xs text-gray-500">从本地图片文件夹中选择</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="relative bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary/50 transition-colors">
+                            <input type="hidden" id="imageFolderPath" value="images">
+                            <i class="fa fa-folder-open-o text-4xl text-gray-400 mb-2"></i>
+                            <p class="text-gray-500">当前图片文件夹: <span id="currentFolder" class="text-primary font-medium">images</span></p>
+                            <button 
+                                id="changeFolderBtn" 
+                                class="mt-3 px-4 py-1.5 bg-white border border-primary text-primary rounded-md hover:bg-primary/5 transition-colors text-sm"
+                            >
+                                <i class="fa fa-pencil mr-1"></i>修改路径
+                            </button>
+                        </div>
+
+                        <!-- 本地图片预览 -->
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-700 mb-2">可选图片预览:</h4>
+                            <div id="imagePreviewContainer" class="grid grid-cols-4 gap-2 max-h-48 overflow-y-auto p-2 bg-gray-50 rounded-lg">
+                                <!-- 图片预览将在这里动态生成 -->
+                                <div class="text-center text-gray-500 text-xs py-4">点击下方按钮加载图片</div>
+                            </div>
+                        </div>
+
+                        <button 
+                            id="loadImagesBtn" 
+                            class="w-full py-2 bg-primary/10 text-primary rounded-md hover:bg-primary/20 transition-colors"
+                        >
+                            <i class="fa fa-refresh mr-1"></i>加载图片列表
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 处理按钮 -->
+                <button 
+                    id="generateBtn" 
+                    class="w-full py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all flex items-center justify-center space-x-2 text-lg font-medium shadow-lg shadow-primary/20"
+                >
+                    <i class="fa fa-magic"></i>
+                    <span>生成PPT提示词</span>
+                </button>
+            </div>
+
+            <!-- 结果展示区域 -->
+            <div>
+                <div class="glassmorphism rounded-xl p-6 h-full flex flex-col card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-primary">
+                            <i class="fa fa-code mr-2"></i>生成结果
+                        </h3>
+                        <div class="flex space-x-2">
+                            <button 
+                                id="copyBtn" 
+                                class="px-3 py-1 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors text-sm"
+                            >
+                                <i class="fa fa-copy mr-1"></i>复制
+                            </button>
+                            <button 
+                                id="clearBtn" 
+                                class="px-3 py-1 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors text-sm"
+                            >
+                                <i class="fa fa-trash mr-1"></i>清空
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="resultContainer" class="flex-1 bg-gray-50 rounded-lg p-4 overflow-auto">
+                        <div class="text-center text-gray-400 py-8">
+                            <i class="fa fa-file-code-o text-4xl mb-2"></i>
+                            <p>点击"生成PPT提示词"按钮开始</p>
+                        </div>
+                    </div>
+
+                    <!-- 处理过程指示器 -->
+                    <div id="progressContainer" class="hidden mt-4 space-y-2">
+                        <div class="flex justify-between items-center text-sm">
+                            <span id="progressText" class="text-gray-700">正在分析文本内容...</span>
+                            <span id="progressPercent" class="text-primary font-medium">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-1.5">
+                            <div id="progressBar" class="bg-primary h-1.5 rounded-full transition-all" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 历史记录卡片 -->
+        <div class="mt-8 glassmorphism rounded-xl p-6 card-hover">
+            <h3 class="text-lg font-semibold text-primary mb-4">
+                <i class="fa fa-history mr-2"></i>历史记录
+            </h3>
+            <div id="historyContainer" class="space-y-3 max-h-60 overflow-y-auto">
+                <div class="text-center text-gray-400 py-4">
+                    暂无历史记录
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-12 py-6 px-4 bg-white border-t border-gray-200">
+        <div class="max-w-6xl mx-auto text-center text-gray-500 text-sm">
+            <p>&copy; 2024 AI PPT 生成助手 - 基于本地大模型的智能PPT制作工具</p>
+            <p class="mt-2">使用 Ollama 和 LangChain 技术构建</p>
+        </div>
+    </footer>
+
+    <!-- 模态框 -->
+    <div id="folderModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-primary">修改图片文件夹路径</h3>
+                <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="mb-4">
+                <label for="newFolderPath" class="block text-sm font-medium text-gray-700 mb-1">文件夹路径</label>
+                <input 
+                    type="text" 
+                    id="newFolderPath" 
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none" 
+                    value="images"
+                >
+                <p class="text-xs text-gray-500 mt-1">支持相对路径或绝对路径</p>
+            </div>
+            <div class="flex space-x-3">
+                <button id="confirmFolderBtn" class="flex-1 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
+                    确认
+                </button>
+                <button id="cancelFolderBtn" class="flex-1 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 成功提示 -->
+    <div id="successToast" class="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 flex items-center space-x-2">
+        <i class="fa fa-check-circle"></i>
+        <span id="toastMessage">操作成功!</span>
+    </div>
+
+    <script>
+        // 模拟生成的PPT提示词示例
+        const mockPptPrompt = `请基于以下信息生成一个商务风格的PPT代码（使用Reveal.js框架）：
+
+1. 整体风格：科技商务风，主色调为深蓝色和白色，简洁专业
+
+2. 幻灯片结构：
+- 封面页：标题"高性能笔记本电脑评测"，副标题"性能与便携性的平衡分析"，底部添加日期
+- 目录页：包含3个主要章节的目录
+- 章节1（性能分析）：
+  - 标题："强大的硬件配置"
+  - 内容：最新处理器、大内存容量、充裕存储空间
+  - 布局：左侧要点，右侧添加游戏帧率测试图表
+- 章节2（用户体验）：
+  - 标题："出色的显示与散热"
+  - 内容：高分辨率屏幕、优化的散热系统
+  - 布局：居中展示笔记本正面图，下方配文
+- 章节3（总结）：
+  - 标题："综合评价"
+  - 内容：性能强、散热好、重量较重、性价比可接受
+  - 布局：左侧红外热成像图，右侧优缺点分析
+- 结束页：感谢观看，联系方式
+
+3. 图片使用：
+- https://example.com/laptop_front.jpg - 插入到用户体验章节
+- https://example.com/gaming_benchmark.png - 插入到性能分析章节
+- https://example.com/thermal_map.jpg - 插入到总结章节
+
+4. 效果要求：
+- 添加平滑的幻灯片过渡效果
+- 要点出现时添加淡入动画
+- 代码高亮显示（如使用）
+
+5. 输出格式：HTML + CSS + JavaScript (Reveal.js)`;
+
+        // DOM元素
+        const textInput = document.getElementById('textInput');
+        const imageFolderPath = document.getElementById('imageFolderPath');
+        const currentFolder = document.getElementById('currentFolder');
+        const changeFolderBtn = document.getElementById('changeFolderBtn');
+        const loadImagesBtn = document.getElementById('loadImagesBtn');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const generateBtn = document.getElementById('generateBtn');
+        const resultContainer = document.getElementById('resultContainer');
+        const copyBtn = document.getElementById('copyBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const progressPercent = document.getElementById('progressPercent');
+        const historyContainer = document.getElementById('historyContainer');
+        
+        // 模态框元素
+        const folderModal = document.getElementById('folderModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelFolderBtn = document.getElementById('cancelFolderBtn');
+        const confirmFolderBtn = document.getElementById('confirmFolderBtn');
+        const newFolderPath = document.getElementById('newFolderPath');
+        
+        // 提示框元素
+        const successToast = document.getElementById('successToast');
+        const toastMessage = document.getElementById('toastMessage');
+
+        // 模拟加载图片列表
+        loadImagesBtn.addEventListener('click', () => {
+            // 清空现有内容
+            imagePreviewContainer.innerHTML = '';
+            
+            // 模拟加载中
+            imagePreviewContainer.innerHTML = '<div class="text-center text-gray-500 text-xs py-4 col-span-4"><i class="fa fa-spinner fa-spin mr-1"></i>加载中...</div>';
+            
+            // 模拟网络延迟
+            setTimeout(() => {
+                // 假设图片文件夹中有14张图片
+                const imageCount = 14;
+                imagePreviewContainer.innerHTML = '';
+                
+                for (let i = 1; i <= imageCount; i++) {
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = 'text-center cursor-pointer hover:bg-gray-100 rounded-md p-1 transition-colors';
+                    imgDiv.innerHTML = `
+                        <div class="aspect-square bg-gray-200 rounded-md mb-1 overflow-hidden flex items-center justify-center">
+                            <i class="fa fa-file-image-o text-gray-400"></i>
+                        </div>
+                        <p class="text-xs text-gray-600 truncate">${i}.png</p>
+                    `;
+                    
+                    // 添加点击效果
+                    imgDiv.addEventListener('click', () => {
+                        // 移除其他选中状态
+                        document.querySelectorAll('#imagePreviewContainer > div').forEach(el => {
+                            el.classList.remove('ring-2', 'ring-primary');
+                        });
+                        // 添加选中状态
+                        imgDiv.classList.add('ring-2', 'ring-primary');
+                        showToast(`已选择图片: ${i}.png`);
+                    });
+                    
+                    imagePreviewContainer.appendChild(imgDiv);
+                }
+            }, 1000);
+        });
+
+        // 生成PPT提示词
+        generateBtn.addEventListener('click', () => {
+            // 显示进度条
+            progressContainer.classList.remove('hidden');
+            progressBar.style.width = '0%';
+            progressPercent.textContent = '0%';
+            progressText.textContent = '正在分析文本内容...';
+            
+            // 模拟进度
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                progressBar.style.width = `${progress}%`;
+                progressPercent.textContent = `${progress}%`;
+                
+                // 更新进度文本
+                if (progress <= 30) {
+                    progressText.textContent = '正在分析文本内容...';
+                } else if (progress <= 60) {
+                    progressText.textContent = '正在分析图片用途...';
+                } else if (progress <= 90) {
+                    progressText.textContent = '正在生成最终PPT提示词...';
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    // 显示结果
+                    resultContainer.innerHTML = `
+                        <div class="bg-dark/5 rounded-lg p-4 font-mono text-sm whitespace-pre-wrap">
+                            ${mockPptPrompt}
+                        </div>
+                    `;
+                    
+                    // 隐藏进度条
+                    setTimeout(() => {
+                        progressContainer.classList.add('hidden');
+                    }, 500);
+                    
+                    // 添加到历史记录
+                    addToHistory();
+                }
+            }, 100);
+        });
+
+        // 复制结果
+        copyBtn.addEventListener('click', () => {
+            const textToCopy = mockPptPrompt;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast('已复制到剪贴板');
+            }).catch(err => {
+                console.error('复制失败:', err);
+            });
+        });
+
+        // 清空结果
+        clearBtn.addEventListener('click', () => {
+            resultContainer.innerHTML = `
+                <div class="text-center text-gray-400 py-8">
+                    <i class="fa fa-file-code-o text-4xl mb-2"></i>
+                    <p>点击"生成PPT提示词"按钮开始</p>
+                </div>
+            `;
+        });
+
+        // 打开文件夹模态框
+        changeFolderBtn.addEventListener('click', () => {
+            newFolderPath.value = imageFolderPath.value;
+            folderModal.classList.remove('hidden');
+        });
+
+        // 关闭模态框
+        const closeModal = () => {
+            folderModal.classList.add('hidden');
+        };
+
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelFolderBtn.addEventListener('click', closeModal);
+        
+        // 点击模态框背景关闭
+        folderModal.addEventListener('click', (e) => {
+            if (e.target === folderModal) {
+                closeModal();
+            }
+        });
+
+        // 确认修改文件夹
+        confirmFolderBtn.addEventListener('click', () => {
+            const newPath = newFolderPath.value.trim();
+            if (newPath) {
+                imageFolderPath.value = newPath;
+                currentFolder.textContent = newPath;
+                closeModal();
+                showToast('文件夹路径已更新');
+            }
+        });
+
+        // 添加到历史记录
+        function addToHistory() {
+            const timestamp = new Date().toLocaleString();
+            const historyItem = document.createElement('div');
+            historyItem.className = 'p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer';
+            historyItem.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <span class="font-medium">PPT提示词生成</span>
+                    <span class="text-xs text-gray-500">${timestamp}</span>
+                </div>
+                <p class="text-sm text-gray-600 mt-1 truncate">高性能笔记本电脑评测</p>
+            `;
+            
+            // 添加点击事件
+            historyItem.addEventListener('click', () => {
+                resultContainer.innerHTML = `
+                    <div class="bg-dark/5 rounded-lg p-4 font-mono text-sm whitespace-pre-wrap">
+                        ${mockPptPrompt}
+                    </div>
+                `;
+                showToast('已加载历史记录');
+            });
+            
+            // 插入到历史记录顶部
+            if (historyContainer.querySelector('.text-center')) {
+                historyContainer.innerHTML = '';
+            }
+            historyContainer.insertBefore(historyItem, historyContainer.firstChild);
+        }
+
+        // 显示提示框
+        function showToast(message) {
+            toastMessage.textContent = message;
+            successToast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                successToast.classList.add('translate-y-20', 'opacity-0');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

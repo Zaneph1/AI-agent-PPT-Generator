@@ -4,6 +4,37 @@
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue)
 ![Version](https://img.shields.io/badge/version-1.0.0-orange)
 
+## 快速开始代码示例
+
+```python
+# 导入PPT生成器
+from ppt_generator import PPTGenerator
+
+# 初始化生成器
+generator = PPTGenerator()
+
+# 准备输入文本
+input_text = """
+这款笔记本电脑性能很强，打游戏非常流畅，散热也不错。
+但是重量有点重，携带不方便，适合固定场所使用。
+总体来说性价比还可以。
+
+笔记本电脑采用了最新的处理器，内存容量大，存储空间充裕。
+屏幕分辨率高，显示效果细腻。
+散热系统经过优化，长时间使用也不会过热。
+"""
+
+# 生成PPT
+ppt_path = generator.generate(
+    text=input_text,
+    title="笔记本电脑性能分析",
+    style="professional",  # 可选: professional, creative, minimal
+    use_cloud_enhance=True  # 使用云端增强获得更好效果
+)
+
+print(f"PPT已成功生成: {ppt_path}")
+```
+
 ## 项目简介
 
 AI PPT Generator 是一个基于人工智能技术的演示文稿自动生成工具，只需输入主题，即可生成风格多样的PPT。该项目利用先进的AI agent技术，实现了从大纲生成、内容填充到排版美化的全流程自动化，极大地提升了演示文稿的创作效率。
@@ -207,9 +238,9 @@ DEBUG=False
 
 ## 联系我们
 
-- 项目仓库：[[https://github.com/yourusername/ai-ppt-generator](https://github.com/yourusername/ai-ppt-generator)](https://github.com/Zaneph1/AI-agent-PPT-Generator)
-- 问题反馈：[[https://github.com/yourusername/ai-ppt-generator/issues](https://github.com/yourusername/ai-ppt-generator/issues)](https://github.com/Zaneph1/AI-agent-PPT-Generator)
+- 项目仓库：[https://github.com/Zaneph1/AI-agent-PPT-Generator](https://github.com/Zaneph1/AI-agent-PPT-Generator)
+- 问题反馈：[https://github.com/Zaneph1/AI-agent-PPT-Generator/issues](https://github.com/Zaneph1/AI-agent-PPT-Generator/issues)
 
 ---
 
-*由AI PPT Generator团队开发和维护*
+*由Zaneph1开发和维护*
